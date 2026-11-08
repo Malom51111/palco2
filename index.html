@@ -1181,12 +1181,14 @@ function renderStart(){const st=UI.setup;
     <button class="big" data-a="cgo">FUNDAR Y EMPEZAR</button><button class="btn w" style="margin-top:8px" data-a="ng2b">Atrás</button></div>`;}}
 function readCust(){const o=UI.setup.cust;if($("#cn"))o.name=$("#cn").value;if($("#cs"))o.short=$("#cs").value;if($("#ccc"))o.cc=$("#ccc").value;}
 
+function offlineTag(){let ok=false;try{ok=!!(navigator.serviceWorker&&navigator.serviceWorker.controller);}catch(e){}if(!location.hostname.endsWith("github.io"))return"";
+  return`<div class="card" style="padding:10px 12px;${ok?"border-color:var(--gr)":"border-color:var(--ye)"}"><span class="sm ${ok?"gr":"ye"}">${ok?"✅ Listo para jugar sin conexión":"⏳ Aún no está guardado para jugar sin conexión. Cierra y vuelve a abrir la app con internet."}</span></div>`;}
 // ---------- acciones ----------
 const A={
   tab(e){UI.tab=e.dataset.t;render();scrollTo(0,0);},
   sub(e){UI.sub[e.dataset.k]=e.dataset.v;render();},
   close(){closeSheet();render();},
-  menu(){sheet(`<h2>Menú</h2><p class="sm mu">${esc(uc().name)} · ${isChair()?"Presidente":"Director Deportivo"} · ${seasonLbl()} · ${weekLbl()}</p><button class="choice" data-a="cash">💰 Meter palancas (modo prueba)</button><button class="choice" data-a="savenow">💾 Guardar partida</button><button class="choice" data-a="exp">📤 Exportar partida (copia de seguridad)</button><button class="choice" data-a="imp">📥 Importar partida</button><button class="choice" data-a="help">❓ Cómo se juega</button><button class="choice" data-a="newgame">🆕 Nueva partida</button><button class="btn w" data-a="close">Cerrar</button>`);},
+  menu(){sheet(`<h2>Menú</h2><p class="sm mu">${esc(uc().name)} · ${isChair()?"Presidente":"Director Deportivo"} · ${seasonLbl()} · ${weekLbl()}</p>${offlineTag()}<button class="choice" data-a="cash">💰 Meter palancas (modo prueba)</button><button class="choice" data-a="savenow">💾 Guardar partida</button><button class="choice" data-a="exp">📤 Exportar partida (copia de seguridad)</button><button class="choice" data-a="imp">📥 Importar partida</button><button class="choice" data-a="help">❓ Cómo se juega</button><button class="choice" data-a="newgame">🆕 Nueva partida</button><button class="btn w" data-a="close">Cerrar</button>`);},
   cash(){sheet(`<h2>💰 Meter palancas</h2><p class="sm mu">Modo prueba: el dinero entra en el saldo y en el presupuesto de fichajes.</p>
     <div class="grid2">${[1e6,10e6,50e6,250e6].map(v=>`<button class="btn p" data-a="cashgo" data-v="${v}">+${fmt(v)}</button>`).join("")}</div>
     <div class="fld" style="margin-top:12px"><label>Otra cantidad (M€)</label>${stepper("cashq",100,10,1,99999)}</div>
